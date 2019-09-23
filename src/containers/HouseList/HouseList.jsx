@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from "react-redux";
 import HouseListItem from "../../components/HouseListItem/HouseListItem";
 import HouseSingle from "../HouseSingle/HouseSingle";
 import { List } from './HouseList.styled';
-import { getHouses, getSingleHouse } from "../../services/api";
+import { getHouses } from '../../state/house/actions';
+// import { getHouses, getSingleHouse } from "../../services/api";
 
-const HouseList = () => {
+const HouseList = (props) => {
     
+    const { getHouses } = props;
+    console.log("PROPS", props)
     const [data, setData] = useState([]);
     const [singleHouse, setSingleHouse] = useState({});
     useEffect(() => {
-        const fetchData = async () => {
-            const { data } = await getHouses();
-            setData(data);
+        // const fetchData = async () => {
+        //     const { data } = await getHouses();
+        //     setData(data);
             
-        };
+        // };
 
-        fetchData();
+        // fetchData();
+        getHouses();
     }, [])
    
     const handleItemClick = async (id) => {
-        const { data } = await getSingleHouse(id);
-        setSingleHouse(data);
+        // const { data } = await getSingleHouse(id);
+        // setSingleHouse(data);
     }
    
     return ( 
@@ -42,4 +47,13 @@ const HouseList = () => {
      );
 }
  
-export default HouseList;
+const mapStateToProps = state => {
+    return {
+      state
+    };
+  };
+
+export default connect(
+    mapStateToProps,
+    {getHouses}
+)(HouseList);
